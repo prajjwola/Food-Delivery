@@ -1,15 +1,27 @@
 const express = require('express')
+const dbConnect = require('./src/db/connection')
+dbConnect()
 const app = express()
-const port = 5000
+require('dotenv').config()
+
+const port = process.env.PORT
+
+
 const userList= [
-  'kaylin','ram','gopal'
+  {id:1, name:'prajjwola',addr: 'ktm'},
+  {id:2, name:'ram',addr: 'ktm'},
+  {id:4, name:'gopal',addr: 'pkr'},
+  {id:5, name:'jeken',addr: 'bhk'},
 ]
 app.get('/users', (req, res) => {
- const searchedUser = userList.filter((item)=>{
-    if(item[0] == req.query.initial ) return item
- })
+  
+const particularUser = userList.find((item)=>{
+    if(item.name.includes(req.query.search)) {
+        return item
+    }
+})
 
- res.send(searchedUser)
+res.send(particularUser)
 })
 
 app.listen(port, () => {
